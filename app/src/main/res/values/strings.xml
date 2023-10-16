@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Movish</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generate_movie_fragment">generate movie fragment</string>
+    <string name="new_movie_fragment">new movie fragment</string>
+    <string name="watch_later_fragment">watch later fragment</string>
+</resources>
