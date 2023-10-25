@@ -14,20 +14,32 @@ import com.bilalberek.movish.R
 import com.bilalberek.movish.Utils.Utils.Companion.POSTER_BASE_URL
 import com.bumptech.glide.Glide
 
-class MovishAdapter(): RecyclerView.Adapter<MovishAdapter.MovishViewholder>(){
+class MovishAdapter(private var triggerDialog: TriggerDialog ? = null): RecyclerView.Adapter<MovishAdapter.MovishViewholder>(){
 
-    inner class MovishViewholder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class MovishViewholder(itemView: View,
+                                 private var triggerDialog: TriggerDialog)
+        : RecyclerView.ViewHolder(itemView){
 
         private var image = itemView.findViewById<ImageView>(R.id.movieImage)
         private var title = itemView.findViewById<TextView>(R.id.title)
        fun bind(item: MovieListResponse.Result){
+
            title.text = item.title
-           Log.d("backStack tracker", "${item?.title}")
+
            val photoUrl = POSTER_BASE_URL + item.posterPath
            Glide.with(itemView.context)
                .load(photoUrl)
                .into(image)
+
+           itemView.setOnClickListener {
+               triggerDialog?.onItemClicked(item)
+           }
        }
+    }
+
+
+    interface TriggerDialog{
+        fun onItemClicked(movieListResponse: MovieListResponse.Result)
     }
 
 
@@ -47,7 +59,7 @@ class MovishAdapter(): RecyclerView.Adapter<MovishAdapter.MovishViewholder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovishViewholder {
        return MovishViewholder(
           LayoutInflater.from(parent.context)
-           .inflate(R.layout.recycler_view_item,parent,false))
+           .inflate(R.layout.recycler_view_item,parent,false),triggerDialog!!)
 
     }
 

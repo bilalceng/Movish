@@ -15,6 +15,8 @@ import retrofit2.Retrofit
 
 class MainViewmodel(application: Application): AndroidViewModel(application) {
 
+    var activeResult: MovieListResponse.Result? = null
+
     private val movieResults = MutableLiveData<List<MovieListResponse.Result>>()
     val _movieResults:LiveData<List<MovieListResponse.Result>>  = movieResults
 
@@ -34,10 +36,8 @@ class MainViewmodel(application: Application): AndroidViewModel(application) {
             try {
                 var response = movishRepo.getMostRatedMovies(1)
                 if (response.isSuccessful){
-                    Log.d("backStack tracker", "response success")
 
                     val movieData = response.body()?.results
-                    Log.d("backStack tracker", "${movieData?.size}")
                     movieResults.postValue(movieData)
 
                 }else{

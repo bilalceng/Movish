@@ -5,17 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bilalberek.movish.Adapters.MovishAdapter
+import com.bilalberek.movish.Model.MovieListResponse
 import com.bilalberek.movish.R
 import com.bilalberek.movish.Ui.Fragments.GenerateMovieFragment
+import com.bilalberek.movish.Ui.Fragments.MovieInfoFragment
 import com.bilalberek.movish.Ui.Fragments.NewMovieFragment
 import com.bilalberek.movish.Ui.Fragments.WatchLaterFragment
 import com.bilalberek.movish.ViewModels.MainViewmodel
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),NewMovieFragment.NewMovieFragmentEvents {
      lateinit var viewmodel: MainViewmodel
     private lateinit var meowNavigation: MeowBottomNavigation
     private var selectedId: Int = 1
@@ -26,10 +30,6 @@ class MainActivity : AppCompatActivity() {
         viewmodel = ViewModelProvider(this, ViewModelProvider
             .AndroidViewModelFactory.getInstance(application))
             .get(MainViewmodel::class.java)
-
-
-
-
 
 
         meowNavigation = findViewById(R.id.bottom_navigation)
@@ -229,10 +229,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    override fun onItemClicked(movieListResponse: MovieListResponse.Result) {
+        viewmodel.activeResult = movieListResponse
+
+       // meowNavigation.visibility = View.INVISIBLE
+
+        //do the fragment transaction activity to movie info fragment
+
+        var transaction = supportFragmentManager.beginTransaction()
+        var movieInfoFragment = MovieInfoFragment.newInstance()
+
+
+        transaction.replace(
+            R.id.fragment_container,
+            movieInfoFragment,
+            MOVIE_INFO_FRAGMENT
+        ).addToBackStack(null).setReorderingAllowed(true).commit()
+    }
+
     companion object{
         const val TAG = "tracking backtrace"
         const val NEW_MOVIE_FRAGMENT = "NewMovieFragment"
         const val GENERATE_MOVIE_FRAGMENT  = "GenerateMovieFragment"
         const val WATCH_LATER_FRAGMENT = "WatchLaterFragment"
+        const val MOVIE_INFO_FRAGMENT = "MovieInfoFragment"
     }
+
+
+
+
 }
