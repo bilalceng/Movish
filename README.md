@@ -10,6 +10,7 @@ movie and if you do not want to watch an randomly generated movie, you can
 search thorough the search bar.(I amcurrently working on it, It is not completed.)
 
 ![Overview](2023_10_25_20_00_24.gif)
+<img src="2023_10_25_20_00_24.gif" width="100">
 
 ## 🚀 Features
 
